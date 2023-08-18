@@ -8,7 +8,6 @@ import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
@@ -16,7 +15,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Getter
-@ToString
+@ToString(callSuper = true)
 @Table(indexes = {
         @Index(columnList = "title"),
         @Index(columnList = "hashtag"),
@@ -30,6 +29,9 @@ public class Article extends AuditingFields{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Setter @ManyToOne(optional = false)
+    private UserAccount userAccount; // 유저 정보 (ID)
+
     @Setter @Column(nullable = false)
     private String title; // 제목
     @Setter @Column(nullable = false, length = 10000)
@@ -38,30 +40,22 @@ public class Article extends AuditingFields{
     @Setter private String hashtag; // 해시태그
 
     // 양방향 바인딩
-    @OrderBy("id") // 정렬
+    @OrderBy("createdAt DESC") // 정렬
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     @ToString.Exclude
     private final Set<ArticleComment> articleComments = new LinkedHashSet<>();
 
-    @CreatedDate @Column(nullable = false)
-    private LocalDateTime createdAt;
-    @CreatedBy @Column(nullable = false, length = 100)
-    private String createdBy;
-    @LastModifiedDate @Column(nullable = false)
-    private LocalDateTime modifiedAt;
-    @LastModifiedBy @Column(nullable = false, length = 100)
-    private String modifiedBy;
-
     protected Article() {}
 
-    private Article(String title, String content, String hashtag) {
+    private Article(UserAccount userAccount, String title, String content, String hashtag) {
+        this.userAccount = userAccount;
         this.title = title;
         this.content = content;
         this.hashtag = hashtag;
     }
 
-    public static Article of(String title, String content, String hashtag) {
-        return new Article(title, content, hashtag);
+    public static Article of(UserAccount userAccount, String title, String content, String hashtag) {
+        return new Article(userAccount, title, content, hashtag);
     }
 
     // equals를 모두를 비교할 필요가 없다 id만 검사해주면 된다.
@@ -78,4 +72,5 @@ public class Article extends AuditingFields{
     public int hashCode() {
         return Objects.hash(id);
     }
+
 }
