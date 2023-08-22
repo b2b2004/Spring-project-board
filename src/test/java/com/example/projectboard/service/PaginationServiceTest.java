@@ -38,7 +38,7 @@ class PaginationServiceTest {
         assertThat(actual).isEqualTo(expected);
     }
 
-    static Stream<Arguments> givenCurrentPageNumberAndTotalPages_whenCalculating_thenReturnsPaginationBarNumbers() {
+    static Stream<Arguments> paginationBarNumbers() {
         return Stream.of(
                 arguments(0, 13, List.of(0, 1, 2, 3, 4)),
                 arguments(1, 13, List.of(0, 1, 2, 3, 4)),
