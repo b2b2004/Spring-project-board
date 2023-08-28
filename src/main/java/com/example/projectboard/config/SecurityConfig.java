@@ -25,15 +25,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
                 http.authorizeHttpRequests(auth -> auth
-                                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                                        .requestMatchers( // antMatchers(), mvcMatchers(), regexMatchers() 변경
-                                    HttpMethod.GET, "/",
-                                    "/articles",
-                                    "/articles/search-hashtag"
-                        ).permitAll().anyRequest().authenticated())
+                                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                        )
                         .formLogin(login -> login
-                            .defaultSuccessUrl("/articles", true)
-                            .permitAll());
+                                .defaultSuccessUrl("/articles", true)
+                                .permitAll());
 
                 return http.build();
 
