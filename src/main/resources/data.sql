@@ -1,12 +1,12 @@
 -- 테스트 계정
 insert into user_account (user_id, user_password, nickname, email, memo, created_at, created_by, modified_at, modified_by) values
-    ('kwon', 'asdf1234', 'kwon', 'kwon@mail.com', 'I am kwon.', now(), 'kwon', now(), 'kwon');
+    ('kwon', '{noop}asdf1234', 'kwon', 'kwon@mail.com', 'I am kwon.', now(), 'kwon', now(), 'kwon');
 
 insert into user_account (user_id, user_password, nickname, email, memo, created_at, created_by, modified_at, modified_by) values
-    ('yong', 'asdf1234', 'yong', 'yong@mail.com', 'I am yong.', now(), 'yong', now(), 'yong');
+    ('yong', '{noop}asdf1234', 'yong', 'yong@mail.com', 'I am yong.', now(), 'yong', now(), 'yong');
 
 insert into user_account (user_id, user_password, nickname, email, memo, created_at, created_by, modified_at, modified_by) values
-    ('ho', 'asdf1234', 'ho', 'ho@mail.com', 'I am ho.', now(), 'ho', now(), 'ho');
+    ('ho', '{noop}asdf1234', 'ho', 'ho@mail.com', 'I am ho.', now(), 'ho', now(), 'ho');
 
 -- 123 게시글
 insert into article (user_id, title, content, hashtag, created_by, modified_by, created_at, modified_at) values
