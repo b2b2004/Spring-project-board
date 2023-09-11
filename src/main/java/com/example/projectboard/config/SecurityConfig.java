@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
@@ -21,11 +22,17 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @EnableWebMvc
 public class SecurityConfig {
 
-    // Spring Security 3.0 이상 버전
+    // Spring boot 3.1 버전 이상
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
                 http.authorizeHttpRequests(auth -> auth
                                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                                .requestMatchers(
+                                        new AntPathRequestMatcher("/"),
+                                        new AntPathRequestMatcher("/articles"),
+                                        new AntPathRequestMatcher("/articles/search-hashtag"))
+                                .permitAll()
+                                .anyRequest().authenticated()
                         )
                         .formLogin(login -> login
                                 .defaultSuccessUrl("/articles", true)
